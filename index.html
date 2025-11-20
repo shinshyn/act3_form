@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>code.dcism</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Kanit:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+
+  <body
+    class="h-screen p-8 bg-gradient-to-br from-gray-900 via-black to-blue-900"
+  >
+    <div class="flex items-center justify-center">
+      <header
+        class="flex flex-col items-center font-[Kanit] font-bold text-8xl bg-gradient-to-r from-blue-700 via-blue-400 to-blue-500 bg-clip-text text-transparent"
+      >
+        <span>&lt;/&gt;</span>
+        <span>code.dcism</span>
+      </header>
+    </div>
+    <span class="flex flex-col items-center font-[Kanit] text-2xl text-white">
+      One hour of practice each day makes a huge difference in One week :>
+    </span>
+
+    <form
+      id="loginForm"
+      class="space-y-5 max-w-md mx-auto mt-10 font-[Kanit] bg-gray-800 p-6 rounded-lg shadow-lg"
+    >
+      <div>
+        <label class="font-[Kanit] text-2xl text-white" for="idNumber"
+          >Student ID Number</label
+        >
+        <input
+          type="number"
+          id="idNumber"
+          name="idNumber"
+          placeholder="Student ID"
+          class="w-full mt-1 px-4 py-2 rounded-md bg-gray-700 text-white placeholder-gray-400 focus:outline-none"
+        />
+        <p id="idError" class="text-red-500 text-sm mt-1 hidden">
+          Student ID Number is required
+        </p>
+      </div>
+
+      <div>
+        <label class="font-[Kanit] text-2xl text-white" for="password"
+          >Password:</label
+        >
+        <input
+          type="password"
+          id="password"
+          name="password"
+          placeholder="Password"
+          class="w-full mt-1 px-4 py-2 rounded-md bg-gray-700 text-white placeholder-gray-400 focus:outline-none"
+        />
+        <p id="passError" class="text-red-500 text-sm mt-1 hidden">
+          Password is required
+        </p>
+      </div>
+
+      <button
+        type="submit"
+        class="w-full bg-gray-700 hover:bg-blue-700 text-white font-medium rounded-lg px-3 py-2 transition duration-300"
+      >
+        SIGN IN
+      </button>
+    </form>
+    <script>
+      const form = document.getElementById("loginForm");
+      const idNumber = document.getElementById("idNumber");
+      const password = document.getElementById("password");
+
+      const idError = document.getElementById("idError");
+      const passError = document.getElementById("passError");
+
+      form.addEventListener("submit", function (e) {
+        let valid = true;
+
+        idNumber.classList.remove("border-red-500", "border-2");
+        password.classList.remove("border-red-500", "border-2");
+
+        idError.classList.add("hidden");
+        passError.classList.add("hidden");
+
+        if (idNumber.value.trim() === "") {
+          valid = false;
+          idNumber.classList.add("border-red-500", "border-2");
+          idError.classList.remove("hidden");
+        }
+
+        if (password.value.trim() === "") {
+          valid = false;
+          password.classList.add("border-red-500", "border-2");
+          passError.classList.remove("hidden");
+        }
+
+        if (!valid) {
+          e.preventDefault();
+        }
+      });
+
+      [idNumber, password].forEach((input) => {
+        input.addEventListener("input", () => {
+          input.classList.remove("border-red-500", "border-2");
+
+          if (input.id === "idNumber") idError.classList.add("hidden");
+          if (input.id === "password") passError.classList.add("hidden");
+        });
+      });
+    </script>
+  </body>
+</html>
