@@ -8,7 +8,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Kanit:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;600;700;900&display=swap"
       rel="stylesheet"
     />
   </head>
@@ -24,8 +24,9 @@
         <span>code.dcism</span>
       </header>
     </div>
+
     <span class="flex flex-col items-center font-[Kanit] text-2xl text-white">
-      One hour of practice each day makes a huge difference in One week :>
+      One hour of practice each day makes a huge difference in one week :>
     </span>
 
     <form
@@ -39,7 +40,6 @@
         <input
           type="number"
           id="idNumber"
-          name="idNumber"
           placeholder="Student ID"
           class="w-full mt-1 px-4 py-2 rounded-md bg-gray-700 text-white placeholder-gray-400 focus:outline-none"
         />
@@ -55,7 +55,6 @@
         <input
           type="password"
           id="password"
-          name="password"
           placeholder="Password"
           class="w-full mt-1 px-4 py-2 rounded-md bg-gray-700 text-white placeholder-gray-400 focus:outline-none"
         />
@@ -71,11 +70,53 @@
         SIGN IN
       </button>
     </form>
+
+    <div
+      id="dashboard"
+      class="hidden max-w-4xl mx-auto mt-12 font-[Kanit] bg-gray-900/60 p-6 rounded-lg shadow-xl text-white"
+    >
+      <div class="flex space-x-4 mb-6">
+        <button class="tabButton bg-blue-700 px-4 py-2 rounded" data-tab="home">
+          Dashboard
+        </button>
+        <button class="tabButton bg-gray-700 px-4 py-2 rounded" data-tab="todo">
+          To-Do List
+        </button>
+      </div>
+
+      <div id="tabContent">
+        <div id="homeTab" class="tab">
+          <h1 class="text-3xl font-bold mb-3">Welcome!</h1>
+          <p class="text-2xl">LET THE GRINDING BEGIN!🤓😵‍💫.</p>
+        </div>
+
+        <div id="todoTab" class="tab hidden">
+          <h1 class="text-3xl font-bold mb-4">To-Do List🎯🤡</h1>
+
+          <div class="flex mb-4">
+            <input
+              id="todoInput"
+              type="text"
+              placeholder="Enter a task..."
+              class="flex-1 px-3 py-2 bg-gray-700 rounded-l text-white"
+            />
+            <button
+              id="addTask"
+              class="bg-blue-600 px-4 py-2 rounded-r hover:bg-blue-700"
+            >
+              Add
+            </button>
+          </div>
+
+          <ul id="todoList" class="space-y-2"></ul>
+        </div>
+      </div>
+    </div>
+
     <script>
       const form = document.getElementById("loginForm");
       const idNumber = document.getElementById("idNumber");
       const password = document.getElementById("password");
-
       const idError = document.getElementById("idError");
       const passError = document.getElementById("passError");
 
@@ -84,7 +125,6 @@
 
         idNumber.classList.remove("border-red-500", "border-2");
         password.classList.remove("border-red-500", "border-2");
-
         idError.classList.add("hidden");
         passError.classList.add("hidden");
 
@@ -102,16 +142,62 @@
 
         if (!valid) {
           e.preventDefault();
+          return;
         }
+
+        e.preventDefault();
+        document.getElementById("loginForm").classList.add("hidden");
+        document.getElementById("dashboard").classList.remove("hidden");
       });
 
       [idNumber, password].forEach((input) => {
         input.addEventListener("input", () => {
           input.classList.remove("border-red-500", "border-2");
-
           if (input.id === "idNumber") idError.classList.add("hidden");
           if (input.id === "password") passError.classList.add("hidden");
         });
+      });
+
+      const tabButtons = document.querySelectorAll(".tabButton");
+      const tabs = {
+        home: document.getElementById("homeTab"),
+        todo: document.getElementById("todoTab"),
+      };
+
+      tabButtons.forEach((btn) => {
+        btn.addEventListener("click", () => {
+          tabButtons.forEach((b) => b.classList.remove("bg-blue-700"));
+          btn.classList.add("bg-blue-700");
+
+          const tabName = btn.dataset.tab;
+          Object.values(tabs).forEach((tab) => tab.classList.add("hidden"));
+          tabs[tabName].classList.remove("hidden");
+        });
+      });
+
+      const todoInput = document.getElementById("todoInput");
+      const todoList = document.getElementById("todoList");
+      const addTask = document.getElementById("addTask");
+
+      addTask.addEventListener("click", () => {
+        const task = todoInput.value.trim();
+        if (task === "") return;
+
+        const li = document.createElement("li");
+        li.className =
+          "flex justify-between items-center bg-gray-700 px-3 py-2 rounded";
+
+        li.innerHTML = `
+          <span>${task}</span>
+          <button class="text-red-400 hover:text-red-600">Delete</button>
+        `;
+
+        li.querySelector("button").addEventListener("click", () => {
+          li.remove();
+        });
+
+        todoList.appendChild(li);
+        todoInput.value = "";
       });
     </script>
   </body>
